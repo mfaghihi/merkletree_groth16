@@ -23,7 +23,7 @@ pub fn mertre(){
     let mut rng = test_rng();
 
     let leaf_crh_params = <H as CRH>::setup(&mut rng).unwrap();
-    let two_to_one_crh_params = <H as TwoToOneCRH>::setup(&mut rng).unwrap(); 
+    let two_to_one_crh_params = <TH as TwoToOneCRH>::setup(&mut rng).unwrap(); 
     let leaves = ark_ff::to_bytes!(vec!([0u8, 2u8, 5u8, 32u8, 3u8, 4u8, 5u8, 12u8])).unwrap();
     
     let mut m= MerkleTree::<MyMerkleTreeParams>::new(
