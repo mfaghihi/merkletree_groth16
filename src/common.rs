@@ -1,6 +1,6 @@
 use ark_crypto_primitives::CRH;
 use ark_crypto_primitives::crh::TwoToOneCRH;
-use ark_crypto_primitives::crh::pedersen::constraints::{CRHGadget,CRHParametersVar};
+//use ark_crypto_primitives::crh::pedersen::constraints::{CRHGadget,CRHParametersVar};
 use ark_crypto_primitives::crh::constraints::{CRHGadget, TwoToOneCRHGadget};
 use ark_crypto_primitives::crh::injective_map::constraints::{
     PedersenCRHCompressorGadget, TECompressorGadget,
@@ -47,11 +47,11 @@ use crate::{JubJub, MembPath, Root};
         pub leaf_crh_params: <H as CRH>::Parameters,
         pub two_to_one_crh_params: <TH as TwoToOneCRH>::Parameters,
     
-        // These are the public inputs to the circuit.
+        // This is the public input to the circuit.
         pub root: Root,
+   
+        // These are the private witnesses to the circuit.
         pub leaf: u8,
-    
-        // This is the private witness to the circuit.
         pub authentication_path: Option<MembPath>,
     }
 
@@ -67,6 +67,6 @@ Window4x256>;
 
 pub type LeafHashParamsVar = <LeafHashGadget as CRHGadget<H, ConstraintF>>::ParametersVar;
 pub type TwoToOneHashParamsVar =
-    <TwoToOneHashGadget as TwoToOneCRHGadget<TwoToOneHash, ConstraintF>>::ParametersVar;
+    <TwoToOneHashGadget as TwoToOneCRHGadget<TH, ConstraintF>>::ParametersVar;
 
-pub type ConstraintF = ark_ed_on_bls12_381::Fq;
+pub type ConstraintF = ark_ed_on_bn254::Fq;
