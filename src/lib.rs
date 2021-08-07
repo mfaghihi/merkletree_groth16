@@ -58,7 +58,3 @@ pub type Root = <TwoToOneHash as TwoToOneCRH>::Output;
 
 /// A membership proof for a given leaf.
 pub type MembPath = Path<MyMerkleTreeParams>;
-
-#[allow(unused)]
-pub  const  SIZEOFINPUT: usize = 64;
-

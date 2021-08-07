@@ -6,5 +6,4 @@ This repo contains an example of building zero-knowlege prover-verifier instance
 
 To choose one of the curves (Bls12-377, Bls12-381, Bn_254), change the default ```[features]``` in the Cargo.toml file in each example; 
 
-To change the size of input, change the value of ```SIZEOFINPUT``` in lib.rs.
 
