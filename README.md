@@ -1,4 +1,4 @@
-# Example for ZKP of Merkle tree using Groth16
+# Example for ZKP of Merkle tree membership using Groth16
 
 This repo contains an example of building zero-knowlege prover-verifier instances using Arkworks' zkSNARK implementation for: 
 
