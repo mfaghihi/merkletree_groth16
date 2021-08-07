@@ -3,7 +3,7 @@ pub mod utils;
 
 pub mod common;
 use common::*; 
-pub  use ark_ed_on_bn254::EdwardsProjective as JubJub;
+pub use ark_ed_on_bn254::EdwardsProjective as JubJub;
 
 // #[cfg(feature="bls12_381")]
 // pub mod poseidon_zk_param_bls12_381;
@@ -32,6 +32,7 @@ pub use ark_bls12_377::*;
 #[cfg(feature="bls12_377")]
 pub type ConstraintF = ark_ed_on_bls12_377::Fq;
 
+
 // #[cfg(feature="bn254")]
 // pub mod poseidon_zk_param_bn254;
 // #[cfg(feature="bn254")]
@@ -56,6 +57,5 @@ pub type Root = <TwoToOneHash as TwoToOneCRH>::Output;
 pub type MembPath = Path<MyMerkleTreeParams>;
 
 #[allow(unused)]
-pub static SIZEOFOUTPUT: usize = 2;
 pub  const  SIZEOFINPUT: usize = 64;
 

@@ -7,22 +7,14 @@ use ark_relations::r1cs::ConstraintSystemRef;
 use ark_relations::r1cs::SynthesisError;
 
 use ark_std::rand::SeedableRng;
-//use ark_relations::r1cs::ConstraintSystem;
 use ark_std::test_rng;
-//use ark_test_curves::bls12_381::Fr;
-
-
 
 use ark_crypto_primitives::SNARK;
-
 use ark_r1cs_std::prelude::*;
-
 use ark_groth16::*;
 use rand_chacha::ChaCha20Rng;
 
 use crate::*;
-
-
 use ark_crypto_primitives::merkle_tree::constraints::PathVar;
 
 pub type RootVar = <TwoToOneHashGadget as TwoToOneCRHGadget<TwoToOneHash, ConstraintF>>::OutputVar;
