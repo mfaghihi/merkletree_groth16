@@ -1,72 +1,82 @@
 use ark_crypto_primitives::CRH;
 use ark_crypto_primitives::crh::TwoToOneCRH;
-//use ark_crypto_primitives::crh::pedersen::constraints::{CRHGadget,CRHParametersVar};
 use ark_crypto_primitives::crh::constraints::{CRHGadget, TwoToOneCRHGadget};
-// use ark_crypto_primitives::crh::injective_map::constraints::{
-//     PedersenCRHCompressorGadget, TECompressorGadget,
-// };
+use ark_crypto_primitives::crh::injective_map::constraints::{
+     PedersenCRHCompressorGadget, TECompressorGadget,
+ };
 use ark_crypto_primitives::crh::{
-    //injective_map::{PedersenCRHCompressor, TECompressor},
+    injective_map::{PedersenCRHCompressor, TECompressor},
     pedersen,
 };
 use ark_crypto_primitives::merkle_tree::Config;
-use ark_ed_on_bls12_381::{constraints::EdwardsVar};
+#[cfg(feature="bls12_381")]
+pub use ark_ed_on_bls12_381::{constraints::EdwardsVar};
+#[cfg(feature="bls12_377")]
+pub use ark_ed_on_bls12_377::{constraints::EdwardsVar};
+#[cfg(feature="bn254")]
+pub use ark_ed_on_bn254::{constraints::EdwardsVar};
 
-use crate::{JubJub, MembPath, Root};
+use crate::{ConstraintF, JubJub, MembPath, Root};
 
 //pub type TwoToOneHash = PedersenCRHCompressor<EdwardsProjective, TECompressor, TwoToOneWindow>;
 #[derive(Clone, PartialEq, Eq, Hash)]
-    pub struct Window4x256;
-    impl pedersen::Window for Window4x256 {
-        const WINDOW_SIZE: usize = 4;
-        const NUM_WINDOWS: usize = 256;
-    }
+pub struct Window4x256;
+impl pedersen::Window for Window4x256 {
+    const WINDOW_SIZE: usize = 4;
+    const NUM_WINDOWS: usize = 256;
+}
 
-    pub type H = pedersen::CRH<JubJub, Window4x256>;
-    
-    #[derive(Clone, PartialEq, Eq, Hash)]
-    pub struct Window4x128;
+//pub type H = pedersen::CRH<JubJub, Window4x256>;
+pub type LeafHash = PedersenCRHCompressor<JubJub, TECompressor, Window4x256>;
 
-    impl pedersen::Window for Window4x128 {
-        const WINDOW_SIZE: usize = 4;
-        const NUM_WINDOWS: usize = 128;
-    }
-    pub type TH = pedersen::CRH<JubJub, Window4x128>;
+// #[derive(Clone, PartialEq, Eq, Hash)]
+// pub struct Window4x128;
 
-    #[derive(Clone)]
+// impl pedersen::Window for Window4x128 {
+//     const WINDOW_SIZE: usize = 4;
+//     const NUM_WINDOWS: usize = 128;
+// }
+//pub type TH = pedersen::CRH<JubJub, Window4x256>;
+pub type TwoToOneHash = PedersenCRHCompressor<JubJub, TECompressor, Window4x256>;
 
-    pub struct MyMerkleTreeParams;
+#[derive(Clone)]
 
-    impl Config for MyMerkleTreeParams {
-        type LeafHash = H;
-        type TwoToOneHash = TH;
-    }
+pub struct MyMerkleTreeParams;
 
-    pub struct MerkleTreeVerification {
-        // These are constants that will be embedded into the circuit
-        pub leaf_crh_params: <H as CRH>::Parameters,
-        pub two_to_one_crh_params: <TH as TwoToOneCRH>::Parameters,
-    
-        // This is the public input to the circuit.
-        pub root: Root,
-   
-        // These are the private witnesses to the circuit.
-        pub leaf: u8,
-        pub authentication_path: Option<MembPath>,
-    }
+impl Config for MyMerkleTreeParams {
+    type LeafHash = LeafHash;
+    type TwoToOneHash = TwoToOneHash;
+}
 
-pub type TwoToOneHashGadget = pedersen::constraints::CRHGadget<
-JubJub, 
-EdwardsVar, 
-Window4x128>;
+pub struct MerkleTreeCircuit {
+    // These are constants that will be embedded into the circuit
+    pub leaf_crh_params: <LeafHash as CRH>::Parameters,
+    pub two_to_one_crh_params: <TwoToOneHash as TwoToOneCRH>::Parameters,
 
-pub type LeafHashGadget = pedersen::constraints::CRHGadget<
-JubJub, 
-EdwardsVar, 
-Window4x256>;
+    // This is the public input to the circuit.
+    pub root: Root,
 
-pub type LeafHashParamsVar = <LeafHashGadget as CRHGadget<H, ConstraintF>>::ParametersVar;
+    // These are the private witnesses to the circuit.
+    pub leaf: u8,
+    pub authentication_path: Option<MembPath>,
+}
+
+pub type TwoToOneHashGadget = PedersenCRHCompressorGadget<
+    JubJub,
+    TECompressor,
+    Window4x256,
+    EdwardsVar,
+    TECompressorGadget,
+>;
+
+pub type LeafHashGadget = PedersenCRHCompressorGadget<
+    JubJub,
+    TECompressor,
+    Window4x256,
+    EdwardsVar,
+    TECompressorGadget,
+>;
+
+pub type LeafHashParamsVar = <LeafHashGadget as CRHGadget<LeafHash, ConstraintF>>::ParametersVar;
 pub type TwoToOneHashParamsVar =
-    <TwoToOneHashGadget as TwoToOneCRHGadget<TH, ConstraintF>>::ParametersVar;
-
-pub type ConstraintF = ark_ed_on_bn254::Fq;
+    <TwoToOneHashGadget as TwoToOneCRHGadget<TwoToOneHash, ConstraintF>>::ParametersVar;

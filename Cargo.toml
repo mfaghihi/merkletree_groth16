@@ -1,7 +1,7 @@
 [package]
-name = "hello"
+name = "merkletreegroth16"
 version = "0.1.0"
-authors = ["mfaghihi"]
+authors = ["Hossein Faghihi mfaghhi.h@gmail.com"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -25,14 +25,13 @@ ark-marlin = { version = "0.3.0",  default-features = false }
 ark-poly = { version = "0.3.0", default-features = false }
 ark-poly-commit = { version = "0.3.0", default-features = false }
 ark-serialize = { version = "0.3.0", default-features = false, features = [ "derive" ] }
+rand_chacha = { version = "0.3.0", default-features = false }
 
 [features]
 #default = [ "r1cs", "std",]
 #default = [ "bls12_377"]
-#default = [ "bls12_381"]
-default = [ "bn254c"]
-bn254c = [ ]
+default = [ "bls12_381"]
+#default = [ "bn254"]
+bn254 = [ ]
 bls12_381 = [ ]
 bls12_377 = [ ]
-
-#curvetype=["Bn254",]
