@@ -2,15 +2,15 @@ use ark_crypto_primitives::CRH;
 use ark_crypto_primitives::crh::TwoToOneCRH;
 //use ark_crypto_primitives::crh::pedersen::constraints::{CRHGadget,CRHParametersVar};
 use ark_crypto_primitives::crh::constraints::{CRHGadget, TwoToOneCRHGadget};
-use ark_crypto_primitives::crh::injective_map::constraints::{
-    PedersenCRHCompressorGadget, TECompressorGadget,
-};
+// use ark_crypto_primitives::crh::injective_map::constraints::{
+//     PedersenCRHCompressorGadget, TECompressorGadget,
+// };
 use ark_crypto_primitives::crh::{
-    injective_map::{PedersenCRHCompressor, TECompressor},
+    //injective_map::{PedersenCRHCompressor, TECompressor},
     pedersen,
 };
 use ark_crypto_primitives::merkle_tree::Config;
-use ark_ed_on_bls12_381::{constraints::EdwardsVar, EdwardsProjective};
+use ark_ed_on_bls12_381::{constraints::EdwardsVar};
 
 use crate::{JubJub, MembPath, Root};
 
