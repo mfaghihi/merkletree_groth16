@@ -14,7 +14,7 @@ pub fn mertre(){
     let two_to_one_crh_params = <TwoToOneHash as TwoToOneCRH>::setup(&mut rng).unwrap(); 
     let leaves = [0u8, 2u8, 5u8, 32u8, 3u8, 4u8, 5u8, 12u8];
     
-    let mut m= MerkleTree::<MyMerkleTreeParams>::new(
+    let  m= MerkleTree::<MyMerkleTreeParams>::new(
         &leaf_crh_params.clone(), 
         &two_to_one_crh_params.clone(), 
         &leaves)
@@ -27,7 +27,6 @@ pub fn mertre(){
     let leaf = 32u8;
 
     assert!(proof.verify(&leaf_crh_params, &two_to_one_crh_params, &root, &leaf).unwrap());
-    m.update(2, &leaf).unwrap();
 
     // let circuit= MerkleTreeCircuit{
     //     leaf_crh_params: (leaf_crh_params.clone()),
